@@ -1,0 +1,150 @@
+<div class="container">
+	<div class="row user-header">
+		<div class="col-md-4">
+			<h1><strong>User Directory</strong></h1>
+		</div>
+		<div class="col-md-8">
+			<button class="btn btn-primary pull-right" (click)="setPhotoUrl()" (click)="addUserModal.show()" mdbWavesEffect>
+			<i class="fa fa-plus-circle" style="color: white;"></i><span> Add new user</span></button>
+		</div>
+		<!--Add User Modal-->
+		<div mdbModal #addUserModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+			<div class="modal-dialog modal-lg" role="document" style="width: 500px;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close pull-right"
+						aria-label="Close" (click)="addUserModal.hide()">
+						<span aria-hidden="true">×</span>
+						</button>
+						<h4 class="modal-title w-100" id="myModalLabel">Add New User</h4>
+					</div>
+					<div class="modal-body">
+						<form>
+							<div class="row">
+								<div class="col-md-4" style="text-align: center;">
+									<div class="image-container">
+										<input type="file" style="display: none;" (change)="onFileSelected($event)"
+										#addfileInput>
+										<img [src]="newUser.photo_url" alt="Profile" style="border-radius: 50%; width: 100px; height: 100px; cursor: pointer;" (click)="addfileInput.click()">
+									</div>
+									<button (click)="onUpload(0)" class="btn btn-flat btn-rounded btn-sm" style="color: black;">Upload</button>
+								</div>
+								<div class="col-md-8">
+									<label for="username">Username</label>
+									<input class="form-control" [(ngModel)]="newUser.username" name="username" type="text" placeholder="enter username" required="true">
+									<label for="address">Address</label>
+									<input class="form-control" [(ngModel)]="newUser.address" name="address" type="text" placeholder="enter address" required="true">
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									<label>Contact</label>
+									<input class="form-control" [(ngModel)]="newUser.contact" type="text" placeholder="enter contact number" name="contact" required="true">
+								</div>
+								<div class="col-md-6">
+									<label>Email</label>
+									<input class="form-control" [(ngModel)]="newUser.email" type="email" placeholder="enter email" name="email" required="true">
+								</div>
+							</div>
+						</form>
+					</div>
+					<div style="text-align: center;">
+						<button type="button" (click)="addNewUser()" (click)="addUserModal.hide()" class="btn btn-primary relative waves-light" style="width: 80%; margin-bottom:20px;" mdbWavesEffect>
+						Add New User
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Address</th>
+				<th>Contact</th>
+				<th>Email</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor=" let user of users; let i=index ">
+				<td>
+					<img [src]="user.photo_url" alt="Profile" style="border-radius: 50%; width: 50px; height: 50px; margin-right: 10px;">
+					{{user.username}}
+				</td>
+				<td>{{user.address}}</td>
+				<td>{{user.contact}}</td>
+				<td>
+					{{user.email}}
+					<div class="btn-group pull-right" style="margin-right: : 5%;" dropdown>
+						<button dropdownToggle class="btn-rounded pull-right"
+						(click)="sendUserDetails(i)"
+						style="cursor: pointer; border: none; border-radius: 8px; text-align: center; background: #eae5e5; color: #7a7777;">
+						<i class="fa fa-ellipsis-h"></i>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right" >
+							<button class="dropdown-item" (click)="editUserModal.show()">
+							<i class="fa fa-pencil-square-o" style="color: black; margin-right: 5px;"></i>
+							Edit User Details
+							</button>
+							<button class="dropdown-item" (click)="deleteUser(user._id)">
+							<i class="fa fa-trash" style="color: red; margin-right: 5px;"></i>
+							Delete User
+							</button>
+						</div>
+					</div>
+					<!--Edit User Modal-->
+					<div mdbModal #editUserModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: false, ignoreBackdropClick: true}">
+						<div class="modal-dialog modal-lg" role="document" style="width: 500px;">
+							<div class="modal-content">
+								<div class="modal-header">
+									<button type="button" class="close pull-right"
+									aria-label="Close" (click)="editUserModal.hide()">
+									<span aria-hidden="true">×</span>
+									</button>
+									<h4 class="modal-title w-100" id="myModalLabel">Edit User</h4>
+								</div>
+								<div class="modal-body">
+									<form>
+										<div class="row">
+											<div class="col-md-4" style="text-align: center;">
+												<div class="image-container">
+													<input type="file" style="display: none;" (change)="onFileSelected($event)"
+													#fileInput>
+													<img [src]="user.photo_url" alt="Profile" style="border-radius: 50%; width: 100px; height: 100px; cursor: pointer;" (click)="fileInput.click()">
+												</div>
+												<button (click)="onUpload(1)" class="btn btn-flat btn-rounded btn-sm" style="color: black;">Upload</button>
+											</div>
+											<div class="col-md-8">
+												<label for="username">Username</label>
+												<input class="form-control" [(ngModel)]="user.username" name="username" type="text" placeholder="enter username" required="true">
+												<label for="address">Address</label>
+												<input class="form-control" [(ngModel)]="user.address" name="address" type="text" placeholder="enter address" required="true">
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-6">
+												<label>Contact</label>
+												<input class="form-control" [(ngModel)]="user.contact" type="text" placeholder="enter contact number" name="contact" required="true">
+											</div>
+											<div class="col-md-6">
+												<label>Email</label>
+												<input class="form-control" [(ngModel)]="user.email" type="email" placeholder="enter email" name="email" required="true">
+											</div>
+										</div>
+									</form>
+								</div>
+								<div style="text-align: center;">
+									<button type="button" (click)="editUser()"
+									(click)="editUserModal.hide()" class="btn btn-primary relative waves-light" style="width: 80%; margin-bottom:20px;" mdbWavesEffect>
+									Update
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
