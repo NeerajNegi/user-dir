@@ -24,3 +24,6 @@ A user directory application
 * Go to front-end and run 'npm install'
 * After installation run 'ng server'
 * After above command, application can be accessed at localhost 4200
+
+### Open App
+Application is deployed to Heroku at https://neeraj-user-dir.herokuapp.com/
